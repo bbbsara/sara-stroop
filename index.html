@@ -1,81 +1,41 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <title>اختبار ستروب الحديث</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>اختبار ستروب - النسخة الحديثة</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app-container">
 
     <!-- شاشة البداية -->
-    <section id="screen-start" class="screen active">
-      <h1>اختبار ستروب العصبي</h1>
-      <p class="subtitle">
-        يتكوّن الاختبار من مرحلتين:<br>
-        المرحلة الأولى (متطابقة) – 10 محاولات<br>
-        المرحلة الثانية (غير متطابقة) – 45 ثانية
-      </p>
+    <div id="startScreen">
+        <h1>اختبار ستروب</h1>
+        <label>اسم الطالب:</label>
+        <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
+        <button onclick="startStage1()">بدء المرحلة الأولى</button>
+    </div>
 
-      <label for="participantName">اسم المشارك:</label>
-      <input id="participantName" type="text" placeholder="اكتب اسمك هنا" />
+    <!-- شاشة الاختبار -->
+    <div id="testScreen" style="display:none;">
+        <h2 id="stageTitle"></h2>
+        <div id="timerBox"></div>
 
-      <button id="btnStart" class="primary-btn">ابدأ المرحلة الأولى</button>
-    </section>
+        <div id="wordCard"></div>
 
-    <!-- شاشة الاختبار (تُستخدم للمرحلتين) -->
-    <section id="screen-test" class="screen">
-      <div class="top-bar">
-        <div id="stageTitle"></div>
-        <div id="stageStatus"></div>
-        <div id="stageTimer"></div>
-      </div>
+        <div id="buttonsContainer"></div>
 
-      <p id="instructionText" class="instruction"></p>
-
-      <div id="stimulusCard" class="stimulus-card">
-        <span id="stimulusWord">جاهز؟</span>
-      </div>
-
-      <div id="colorButtons" class="buttons-row">
-        <!-- الأزرار الملونة تُنشأ من script.js -->
-      </div>
-
-      <button id="btnEndStage1" class="secondary-btn">
-        إنهاء المرحلة الأولى
-      </button>
-    </section>
+        <button id="endStageBtn" onclick="endStage()" style="display:none;">إنهاء المرحلة</button>
+    </div>
 
     <!-- شاشة النتائج -->
-    <section id="screen-end" class="screen">
-      <h2>نتائج الاختبار</h2>
+    <div id="resultScreen" style="display:none;">
+        <h2>نتيجة الاختبار</h2>
+        <div id="resultsBox"></div>
+        <button onclick="restart()">إعادة الاختبار</button>
+    </div>
 
-      <div class="results-block">
-        <h3>المرحلة الأولى (متطابقة)</h3>
-        <p id="s1Summary"></p>
-        <p id="s1Rt"></p>
-      </div>
+<script src="config.js"></script>
+<script src="script.js"></script>
 
-      <div class="results-block">
-        <h3>المرحلة الثانية (غير متطابقة)</h3>
-        <p id="s2Summary"></p>
-        <p id="s2Rt"></p>
-      </div>
-
-      <div class="results-block highlight">
-        <h3>Stroop Effect</h3>
-        <p id="stroopEffect"></p>
-      </div>
-
-      <button class="secondary-btn" onclick="location.reload()">
-        إعادة الاختبار
-      </button>
-    </section>
-
-  </div>
-
-  <script src="config.js"></script>
-  <script src="script.js"></script>
 </body>
 </html>
