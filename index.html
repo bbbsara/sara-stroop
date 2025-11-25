@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <title>اختبار ستروب - نسختين</title>
+  <title>اختبار ستروب الحديث</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -12,62 +12,63 @@
     <!-- شاشة البداية -->
     <section id="screen-start" class="screen active">
       <h1>اختبار ستروب العصبي</h1>
-      <p class="subtitle">نسخة رقمية مكوّنة من مرحلتين</p>
-
-      <label for="participant-name">اسم الطالب / المشارك:</label>
-      <input id="participant-name" type="text" placeholder="اكتب اسمك هنا" />
-
-      <button id="start-btn" class="primary-btn">ابدأ الاختبار</button>
-
-      <p class="note">
-        المرحلة 1: كلمات متطابقة (10 محاولات)<br />
-        المرحلة 2: كلمات غير متطابقة (40 محاولة)
+      <p class="subtitle">
+        يتكوّن الاختبار من مرحلتين:<br>
+        المرحلة الأولى (متطابقة) – 10 محاولات<br>
+        المرحلة الثانية (غير متطابقة) – 45 ثانية
       </p>
+
+      <label for="participantName">اسم المشارك:</label>
+      <input id="participantName" type="text" placeholder="اكتب اسمك هنا" />
+
+      <button id="btnStart" class="primary-btn">ابدأ المرحلة الأولى</button>
     </section>
 
-    <!-- شاشة الاختبار -->
+    <!-- شاشة الاختبار (تُستخدم للمرحلتين) -->
     <section id="screen-test" class="screen">
       <div class="top-bar">
-        <div id="stage-label">المرحلة: 1</div>
-        <div id="trial-label">المحاولة: 1</div>
-        <div id="timer-label">الزمن: 0 ms</div>
+        <div id="stageTitle"></div>
+        <div id="stageStatus"></div>
+        <div id="stageTimer"></div>
       </div>
 
-      <div class="card">
-        <span id="word-display">جاهز؟</span>
+      <p id="instructionText" class="instruction"></p>
+
+      <div id="stimulusCard" class="stimulus-card">
+        <span id="stimulusWord">جاهز؟</span>
       </div>
 
-      <div class="buttons-row" id="color-buttons">
-        <!-- الأزرار تُنشأ ديناميكياً من config.js -->
+      <div id="colorButtons" class="buttons-row">
+        <!-- الأزرار الملونة تُنشأ من script.js -->
       </div>
 
-      <p class="instruction" id="instruction-text">
-        اختر اللون الحقيقي للكلمة.
-      </p>
+      <button id="btnEndStage1" class="secondary-btn">
+        إنهاء المرحلة الأولى
+      </button>
     </section>
 
-    <!-- شاشة النهاية -->
+    <!-- شاشة النتائج -->
     <section id="screen-end" class="screen">
-      <h2>انتهى الاختبار</h2>
+      <h2>نتائج الاختبار</h2>
 
       <div class="results-block">
-        <h3>نتائج المرحلة 1 (متطابقة)</h3>
-        <p id="stage1-accuracy"></p>
-        <p id="stage1-rt"></p>
+        <h3>المرحلة الأولى (متطابقة)</h3>
+        <p id="s1Summary"></p>
+        <p id="s1Rt"></p>
       </div>
 
       <div class="results-block">
-        <h3>نتائج المرحلة 2 (غير متطابقة)</h3>
-        <p id="stage2-accuracy"></p>
-        <p id="stage2-rt"></p>
+        <h3>المرحلة الثانية (غير متطابقة)</h3>
+        <p id="s2Summary"></p>
+        <p id="s2Rt"></p>
       </div>
 
       <div class="results-block highlight">
         <h3>Stroop Effect</h3>
-        <p id="stroop-effect"></p>
+        <p id="stroopEffect"></p>
       </div>
 
-      <button id="restart-btn" class="secondary-btn">
+      <button class="secondary-btn" onclick="location.reload()">
         إعادة الاختبار
       </button>
     </section>
