@@ -30,7 +30,6 @@ const wordCard      = document.getElementById("wordCard");
 const buttonsBox    = document.getElementById("buttonsContainer");
 const stageTitleEl  = document.getElementById("stageTitle");
 const timerBox      = document.getElementById("timerBox");
-const instructionEl = document.getElementById("instructionText");
 const endStageBtn   = document.getElementById("endStageBtn");
 
 // إنشاء أزرار الألوان مرة واحدة
@@ -61,9 +60,6 @@ function startStage1() {
   resultScreen.style.display = "none";
 
   stageTitleEl.textContent = "المرحلة الأولى: كلمة مطابقة للون";
-  instructionEl.textContent =
-    "في هذه المرحلة تكون الكلمة مكتوبة بلون يطابق معناها (مثال: كلمة \"أحمر\" باللون الأحمر). مهمتك أن تختار بطاقة اللون المطابقة للون الحبر الظاهر.";
-
   timerBox.textContent = "";
   endStageBtn.style.display = "block";
 
@@ -71,17 +67,17 @@ function startStage1() {
   createStage1Trial();
 }
 
-// توليد محاولة جديدة في المرحلة الأولى
+// توليد محاولة جديدة في المرحلة الأولى (بعد الإصلاح)
 function createStage1Trial() {
   if (s1_trials >= CONFIG.stage1_trials) {
-    // انتهت المحاولات، نطلب من الطالب الضغط على زر إنهاء
-    wordCard.textContent = "انتهت محاولات هذه المرحلة.\nاضغط زر \"إنهاء المرحلة\" للانتقال للمرحلة الثانية.";
+    wordCard.textContent = "انتهت محاولات هذه المرحلة. اضغط زر \"إنهاء المرحلة\".";
     wordCard.style.color = "#111827";
     reactionStart = null;
     return;
   }
 
   s1_trials++;
+
   const colorObj = CONFIG.colors[Math.floor(Math.random() * CONFIG.colors.length)];
 
   currentWord = colorObj.name;
@@ -90,13 +86,13 @@ function createStage1Trial() {
   wordCard.textContent = currentWord;
   wordCard.style.color = currentInk;
 
+  // 🔥 الإصلاح الأساسي
   reactionStart = performance.now();
 }
 
-// إنهاء المرحلة الأولى والانتقال للثانية
+// زر إنهاء المرحلة الأولى
 function endStage() {
-  if (currentStage !== 1) return;
-  startStage2();
+  if (currentStage === 1) startStage2();
 }
 
 // بدء المرحلة الثانية
@@ -106,9 +102,6 @@ function startStage2() {
   s2_times = [];
 
   stageTitleEl.textContent = "المرحلة الثانية: كلمة غير مطابقة للون";
-  instructionEl.textContent =
-    "في هذه المرحلة يكون لون الحبر مختلفًا عن معنى الكلمة (مثال: كلمة \"أحمر\" مكتوبة باللون الأخضر). ركّز فقط على لون الحبر واضغط على بطاقة اللون الصحيحة، وتجاهل معنى الكلمة.";
-
   endStageBtn.style.display = "none";
 
   stage2Remaining = CONFIG.stage2_time;
@@ -118,9 +111,7 @@ function startStage2() {
   stage2Interval = setInterval(() => {
     stage2Remaining--;
     if (stage2Remaining <= 0) {
-      timerBox.textContent = "0 ثانية";
       clearInterval(stage2Interval);
-      stage2Interval = null;
       finishTest();
     } else {
       timerBox.textContent = stage2Remaining + " ثانية";
@@ -131,7 +122,7 @@ function startStage2() {
   createStage2Trial();
 }
 
-// توليد مثير جديد في المرحلة الثانية (غير متطابق)
+// توليد محاولة جديدة للمرحلة الثانية (بعد الإصلاح)
 function createStage2Trial() {
   if (stage2Remaining <= 0) {
     finishTest();
@@ -143,7 +134,6 @@ function createStage2Trial() {
   let wordObj = CONFIG.colors[Math.floor(Math.random() * CONFIG.colors.length)];
   let inkObj  = CONFIG.colors[Math.floor(Math.random() * CONFIG.colors.length)];
 
-  // نضمن أن اللون لا يطابق معنى الكلمة
   while (inkObj.code === wordObj.code) {
     inkObj = CONFIG.colors[Math.floor(Math.random() * CONFIG.colors.length)];
   }
@@ -154,17 +144,18 @@ function createStage2Trial() {
   wordCard.textContent = currentWord;
   wordCard.style.color = currentInk;
 
+  // 🔥 الإصلاح الأساسي
   reactionStart = performance.now();
 }
 
-// الضغط على بطاقة اللون (للمرحلتين)
+// الضغط على زر اللون
 function submitAnswer(selectedColor) {
   if (!reactionStart || !currentStage) return;
 
   const rt = Math.round(performance.now() - reactionStart);
   const correct = selectedColor === currentInk ? 1 : 0;
 
-  // إرسال محاولة واحدة إلى Google Sheet
+  // إرسال محاولة واحدة
   sendTrial({
     participantName: studentName,
     word: currentWord,
@@ -179,16 +170,18 @@ function submitAnswer(selectedColor) {
     if (correct) s1_correct++; else s1_wrong++;
     s1_times.push(rt);
     createStage1Trial();
-  } else if (currentStage === 2) {
+  }
+
+  else if (currentStage === 2) {
     if (correct) s2_correct++; else s2_wrong++;
     s2_times.push(rt);
-    createStage2Trial(); // ← هنا التصحيح: توليد مثير جديد بعد كل إجابة
+    createStage2Trial();
   }
 
   reactionStart = null;
 }
 
-// إنهاء الاختبار بالكامل وحساب النتائج
+// إنهاء الاختبار
 function finishTest() {
   currentStage = 0;
   testScreen.style.display = "none";
@@ -198,14 +191,12 @@ function finishTest() {
   const s2_avg = s2_times.length ? s2_times.reduce((a,b)=>a+b,0) / s2_times.length : 0;
   const stroop = s2_avg - s1_avg;
 
-  const html = `
-    <p>المرحلة الأولى (مطابقة اللون): صحيح ${s1_correct} ، خطأ ${s1_wrong} ، متوسط زمن الاستجابة = ${s1_avg.toFixed(1)} مللي ثانية.</p>
-    <p>المرحلة الثانية (عدم تطابق اللون): صحيح ${s2_correct} ، خطأ ${s2_wrong} ، متوسط زمن الاستجابة = ${s2_avg.toFixed(1)} مللي ثانية.</p>
-    <h3>تأثير ستروب = ${stroop.toFixed(1)} مللي ثانية (متوسط زمن المرحلة الثانية - الأولى).</h3>
+  document.getElementById("resultsBox").innerHTML = `
+    <p>المرحلة الأولى: صحيح ${s1_correct} ، خطأ ${s1_wrong}، المتوسط ${s1_avg.toFixed(1)} ملّي.</p>
+    <p>المرحلة الثانية: صحيح ${s2_correct} ، خطأ ${s2_wrong}، المتوسط ${s2_avg.toFixed(1)} ملّي.</p>
+    <h3>تأثير ستروب = ${stroop.toFixed(1)} ملّي.</h3>
   `;
-  document.getElementById("resultsBox").innerHTML = html;
 
-  // إرسال النتائج النهائية
   sendFinalResults({
     participantName: studentName,
     s1_correct,
@@ -219,25 +210,22 @@ function finishTest() {
   });
 }
 
-// إرسال محاولة واحدة
 function sendTrial(data) {
   fetch(CONFIG.scriptURL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
-  }).catch(err => console.error("Trial send error:", err));
+  });
 }
 
-// إرسال النتائج النهائية
 function sendFinalResults(finalResults) {
   fetch(CONFIG.scriptURL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ finalResults })
-  }).catch(err => console.error("Final send error:", err));
+  });
 }
 
-// إعادة الاختبار
 function restart() {
   location.reload();
 }
