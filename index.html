@@ -1,41 +1,49 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>اختبار ستروب - النسخة الحديثة</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>اختبار ستروب - النسخة الحديثة</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- شاشة البداية -->
-    <div id="startScreen">
-        <h1>اختبار ستروب</h1>
-        <label>اسم الطالب:</label>
-        <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
-        <button onclick="startStage1()">بدء المرحلة الأولى</button>
-    </div>
+  <!-- شاشة البداية -->
+  <div id="startScreen">
+    <h1>اختبار ستروب</h1>
+    <p class="subtitle">
+      يتكوّن الاختبار من مرحلتين:<br>
+      <strong>المرحلة الأولى:</strong> الكلمة مكتوبة بلون يطابق معناها (10 محاولات).<br>
+      <strong>المرحلة الثانية:</strong> الكلمة مكتوبة بلون لا يطابق المعنى (45 ثانية).
+    </p>
 
-    <!-- شاشة الاختبار -->
-    <div id="testScreen" style="display:none;">
-        <h2 id="stageTitle"></h2>
-        <div id="timerBox"></div>
+    <label for="studentName">اسم الطالب:</label>
+    <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
 
-        <div id="wordCard"></div>
+    <button onclick="startStage1()">بدء المرحلة الأولى</button>
+  </div>
 
-        <div id="buttonsContainer"></div>
+  <!-- شاشة الاختبار -->
+  <div id="testScreen" style="display:none;">
+    <h2 id="stageTitle"></h2>
+    <div id="timerBox"></div>
 
-        <button id="endStageBtn" onclick="endStage()" style="display:none;">إنهاء المرحلة</button>
-    </div>
+    <p id="instructionText" class="instruction"></p>
 
-    <!-- شاشة النتائج -->
-    <div id="resultScreen" style="display:none;">
-        <h2>نتيجة الاختبار</h2>
-        <div id="resultsBox"></div>
-        <button onclick="restart()">إعادة الاختبار</button>
-    </div>
+    <div id="wordCard"></div>
 
-<script src="config.js"></script>
-<script src="script.js"></script>
+    <div id="buttonsContainer"></div>
 
+    <button id="endStageBtn" onclick="endStage()">إنهاء المرحلة الأولى والانتقال للثانية</button>
+  </div>
+
+  <!-- شاشة النتائج -->
+  <div id="resultScreen" style="display:none;">
+    <h2>نتيجة الاختبار</h2>
+    <div id="resultsBox"></div>
+    <button onclick="restart()">إعادة الاختبار</button>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
