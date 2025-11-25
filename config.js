@@ -1,22 +1,14 @@
-// config.js
-
 const CONFIG = {
-  // الألوان القياسية لاختبار ستروب
-  COLORS: [
-    { label: "أحمر",  code: "#FF0000" },
-    { label: "أخضر",  code: "#00A000" },
-    { label: "أزرق",  code: "#0000FF" },
-    { label: "أصفر",  code: "#FFFF00" },
-    { label: "أسود",  code: "#000000" }
-  ],
+    stage1_trials: 10,   // المرحلة الأولى 10 محاولات
+    stage2_time: 45,     // المرحلة الثانية 45 ثانية
 
-  // عدد محاولات المرحلة الأولى (متطابقة)
-  STAGE1_TRIALS: 10,
+    colors: [
+        {name: "أحمر", code: "red"},
+        {name: "أخضر", code: "green"},
+        {name: "أزرق", code: "blue"},
+        {name: "أصفر", code: "yellow"},
+        {name: "أسود", code: "black"}
+    ],
 
-  // زمن المرحلة الثانية (غير متطابقة) بالثواني
-  STAGE2_DURATION_SEC: 45,
-
-  // رابط الويب آب لـ Google Apps Script
-  // استبدلي هذا الرابط برابط الويب-آب الحقيقي عندك
-  SCRIPT_URL: "https://script.google.com/macros/s/PASTE_YOUR_WEB_APP_URL_HERE/exec"
+    scriptURL: "https://script.google.com/macros/s/AKfycbyTly6bvIjgpGD8F6QTBl1MRQzRVVC0kQDY9SvFy7y4/dev"
 };
