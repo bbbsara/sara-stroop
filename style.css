@@ -1,41 +1,100 @@
 body {
-    font-family: "Tajawal", sans-serif;
-    background: #f8f8f8;
-    text-align: center;
-    padding: 40px;
+  font-family: "Tajawal", sans-serif;
+  background: #f3f4f6;
+  text-align: center;
+  padding: 40px 10px;
 }
 
 #startScreen, #testScreen, #resultScreen {
-    max-width: 420px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  max-width: 430px;
+  margin: auto;
+  background: #ffffff;
+  padding: 20px 16px;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+h1, h2 {
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  text-align: right;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+#studentName {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 12px;
+}
+
+button {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #10b981;
+  color: #022c22;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+button:hover {
+  filter: brightness(1.05);
 }
 
 #wordCard {
-    margin: 40px 0;
-    font-size: 40px;
-    font-weight: bold;
-    padding: 20px;
-    border-radius: 12px;
-    background: #ffffff;
-    border: 2px solid #ddd;
-}
-
-.colorButton {
-    width: 120px;
-    height: 60px;
-    margin: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
+  margin: 26px 0;
+  font-size: 40px;
+  font-weight: bold;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
 }
 
 #timerBox {
-    font-size: 28px;
-    margin-bottom: 10px;
+  font-size: 24px;
+  margin-bottom: 6px;
+  color: #f97316;
+  font-weight: 700;
+}
+
+.instruction {
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+#buttonsContainer {
+  margin-top: 10px;
+}
+
+.colorButton {
+  width: 120px;
+  height: 60px;
+  margin: 8px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+#endStageBtn {
+  background: #e5e7eb;
+  color: #111827;
+  border-radius: 999px;
+  margin-top: 16px;
+  font-size: 0.9rem;
 }
