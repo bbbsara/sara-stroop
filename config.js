@@ -10,6 +10,6 @@ const CONFIG = {
     { name: "أسود", code: "black" }
   ],
 
-  scriptURL: "https://script.google.com/macros/s/AKfycbyHIEEVIJuz60793SxHXo4nEva022XCpfbTPiHaTGt38nQb1dHQFO3F98v_M8oStJ02Ww/exec"
+  scriptURL: "https://script.google.com/macros/s/AKfycbwpWIbsW9pgNk6yCEAShL5Zd-0ljz_kk3YejBOIC3bJPu7BqKTeHy01AG2yqWw_00TO/exec"
   // لو عملتِ نشر نهائي للويب آب، يفضّل يكون /exec بدلاً من /dev
 };
