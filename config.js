@@ -13,5 +13,5 @@ const CONFIG = {
   ],
 
   // ضع هنا رابط الويب آب الخاص بـ Google Apps Script (POST URL)
-  SCRIPT_URL: "https://script.google.com/macros/s/PASTE_YOUR_WEB_APP_URL_HERE/exec"
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbzkcS5_l0dGZ9J11Gng4W5050DrhxWcWuubwKvMKLofc4WfkGY6x_0OtO4KcE_1uM-04A/exec"
 };
