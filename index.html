@@ -8,41 +8,18 @@
 </head>
 <body>
 
-<div id="start-screen">
-    <h1>اختبار ستروب</h1>
-
-    <label>اسم الطالب:</label>
-    <input id="student-name" type="text" placeholder="اكتب اسمك هنا">
-
-    <label>الصف:</label>
-    <input id="student-class" type="text" placeholder="اكتب الصف أو الشعبة">
-
-    <button id="start-btn">ابدأ الاختبار</button>
-</div>
-
-<div id="test-screen" style="display:none;">
-    <div id="status-bar">
-        <span id="trial-count">0 / 40</span>
-        <span id="timer">0.00 ث</span>
+<div id="test-container">
+    <div id="card">
+        <span id="word"></span>
     </div>
 
-    <div id="word-box">
-        <span id="stimulus">XXXXX</span>
+    <div id="color-buttons">
+        <button class="btn" data-color="red"></button>
+        <button class="btn" data-color="blue"></button>
+        <button class="btn" data-color="green"></button>
+        <button class="btn" data-color="yellow"></button>
+        <button class="btn" data-color="orange"></button>
     </div>
-
-    <div id="buttons">
-        <button class="color-btn" data-color="أحمر" style="background:#e53935;"></button>
-        <button class="color-btn" data-color="أزرق" style="background:#1e88e5;"></button>
-        <button class="color-btn" data-color="أخضر" style="background:#43a047;"></button>
-        <button class="color-btn" data-color="أصفر" style="background:#fdd835;"></button>
-        <button class="color-btn" data-color="برتقالي" style="background:#fb8c00;"></button>
-    </div>
-</div>
-
-<div id="end-screen" style="display:none;">
-    <h2>انتهى الاختبار</h2>
-    <p id="summary"></p>
-    <button onclick="location.reload()">إعادة الاختبار</button>
 </div>
 
 <script src="script.js"></script>
