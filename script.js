@@ -1,72 +1,105 @@
-// الكلمات العربية
-const words = {
-    red: "أحمر",
-    blue: "أزرق",
-    green: "أخضر",
-    yellow: "أصفر",
-    orange: "برتقالي"
-};
+const words = ["أحمر", "أزرق", "أخضر", "أصفر", "برتقالي"];
 
-// خرائط الألوان للخلفية والخط
 const colorsHex = {
-    red: "#ff3b30",
-    blue: "#007aff",
-    green: "#4cd964",
-    yellow: "#ffeb3b",
-    orange: "#ff9500"
+    "أحمر":    "#ff3b30",
+    "أزرق":    "#007aff",
+    "أخضر":    "#4cd964",
+    "أصفر":    "#ffeb3b",
+    "برتقالي":"#ff9500"
 };
 
-let trials = 40;
+const TOTAL = 40;
+
 let current = 0;
+let correct = 0;
+let wrong = 0;
+let startTime;
+let reactionTimes = [];
+let studentName = "";
 
-// عناصر
+// عناصر الصفحة
+const startScreen = document.getElementById("start-screen");
+const testContainer = document.getElementById("test-container");
+const endScreen = document.getElementById("end-screen");
+
 const wordEl = document.getElementById("word");
+const counterEl = document.getElementById("counter");
+const timerEl = document.getElementById("timer");
 
-// إنشاء تجربة جديدة
-function newTrial() {
-    current++;
-
-    if (current > trials) {
-        wordEl.textContent = "انتهى";
-        document.body.style.background = "#333";
+// بدء الاختبار
+document.getElementById("start-btn").onclick = () => {
+    studentName = document.getElementById("student-name").value.trim();
+    if (!studentName) {
+        alert("يرجى كتابة اسم الطالب");
         return;
     }
 
-    const allColors = Object.keys(words);
+    startScreen.style.display = "none";
+    testContainer.style.display = "block";
 
-    const isNeutral = Math.random() < 0.5; // محايد أو غير متطابق؟
+    startTime = performance.now();
+    newTrial();
+};
 
-    if (isNeutral) {
-        wordEl.textContent = "XXXXX";
-        let ink = allColors[Math.floor(Math.random()*allColors.length)];
-        wordEl.style.color = colorsHex[ink];
-        document.body.style.background = colorsHex[ink];
-        wordEl.dataset.correct = ink;
+function newTrial() {
+    current++;
 
-    } else {
-        let wordColor = allColors[Math.floor(Math.random()*allColors.length)];
-        let inkOptions = allColors.filter(c => c !== wordColor);
-        let ink = inkOptions[Math.floor(Math.random()*inkOptions.length)];
-
-        wordEl.textContent = words[wordColor];
-        wordEl.style.color = colorsHex[ink];
-        document.body.style.background = colorsHex[ink];
-        wordEl.dataset.correct = ink;
+    if (current > TOTAL) {
+        finishTest();
+        return;
     }
+
+    counterEl.textContent = `${current} / ${TOTAL}`;
+
+    // اختيار كلمة و لون خط مختلف
+    let word = pickRandom(words);
+    let ink = pickRandom(words.filter(c => c !== word));
+
+    wordEl.textContent = word;
+    wordEl.style.color = colorsHex[ink];
+    document.body.style.background = colorsHex[ink];
+
+    wordEl.dataset.correct = ink;
 }
 
-// عند الضغط على زر
 document.querySelectorAll(".btn").forEach(btn => {
     btn.onclick = () => {
-        let correct = wordEl.dataset.correct;
-        let chosen = btn.dataset.color;
+        let answer = btn.dataset.color;
+        let correctColor = wordEl.dataset.correct;
 
-        // لو تريدين حفظ النتائج أضيفه الآن
-        // console.log({correct, chosen});
+        let now = performance.now();
+        reactionTimes.push(now - startTime);
+        startTime = now;
+
+        if (answer === correctColor) correct++;
+        else wrong++;
 
         newTrial();
     };
 });
 
-// أول تجربة
-newTrial();
+function finishTest() {
+    testContainer.style.display = "none";
+    endScreen.style.display = "block";
+
+    let totalTime = reactionTimes.reduce((a,b) => a+b, 0);
+    let avgTime = totalTime / reactionTimes.length;
+
+    document.getElementById("result-name").innerHTML   = "الاسم: " + studentName;
+    document.getElementById("result-correct").innerHTML = "الإجابات الصحيحة: " + correct;
+    document.getElementById("result-wrong").innerHTML   = "الأخطاء: " + wrong;
+    document.getElementById("result-time").innerHTML    = "الزمن الكلي: " + totalTime.toFixed(0) + " مللي ثانية";
+    document.getElementById("result-avg").innerHTML     = "متوسط الزمن: " + avgTime.toFixed(0) + " مللي ثانية";
+}
+
+function pickRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// مؤقت الشاشة (يعمل كل 100ms)
+setInterval(() => {
+    if (startScreen.style.display === "none" && testContainer.style.display === "block") {
+        let t = (performance.now() - startTime) / 1000;
+        timerEl.textContent = t.toFixed(2) + " ثانية";
+    }
+}, 100);
