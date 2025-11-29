@@ -17,6 +17,10 @@ let startTime;
 let reactionTimes = [];
 let studentName = "";
 
+// مصفوفتان لتسجيل كل محاولة
+let shownWords = [];
+let shownInks  = [];
+
 // عناصر الصفحة
 const startScreen = document.getElementById("start-screen");
 const testContainer = document.getElementById("test-container");
@@ -51,7 +55,7 @@ function newTrial() {
 
     counterEl.textContent = `${current} / ${TOTAL}`;
 
-    // اختيار كلمة و لون خط مختلف
+    // اختيار كلمة ولون خط مختلف
     let word = pickRandom(words);
     let ink = pickRandom(words.filter(c => c !== word));
 
@@ -60,6 +64,10 @@ function newTrial() {
     document.body.style.background = colorsHex[ink];
 
     wordEl.dataset.correct = ink;
+
+    // تسجيل الكلمة واللون الحقيقي
+    shownWords.push(word);
+    shownInks.push(ink);
 }
 
 document.querySelectorAll(".btn").forEach(btn => {
@@ -78,6 +86,7 @@ document.querySelectorAll(".btn").forEach(btn => {
     };
 });
 
+// دالة نهاية الاختبار + الإرسال إلى Google Sheet
 function finishTest() {
     testContainer.style.display = "none";
     endScreen.style.display = "block";
@@ -90,6 +99,26 @@ function finishTest() {
     document.getElementById("result-wrong").innerHTML   = "الأخطاء: " + wrong;
     document.getElementById("result-time").innerHTML    = "الزمن الكلي: " + totalTime.toFixed(0) + " مللي ثانية";
     document.getElementById("result-avg").innerHTML     = "متوسط الزمن: " + avgTime.toFixed(0) + " مللي ثانية";
+
+    // تجهيز البيانات للإرسال
+    let trialsPayload = shownWords.map((w, index) => ({
+        trial: index + 1,
+        word: w,
+        ink:  shownInks[index]
+    }));
+
+    // إرسال النتائج إلى Google Sheet
+    fetch("https://script.google.com/macros/s/AKfycbxb79eruEEyc-MEtgA4hlc0_fdeWCBwXu7a5VEAdE62SiXJF__LS1doSy6hS-Im8dp7sQ/exec", {
+        method: "POST",
+        body: JSON.stringify({
+            name:      studentName,
+            correct:   correct,
+            wrong:     wrong,
+            totalTime: totalTime.toFixed(0),
+            avgTime:   avgTime.toFixed(0),
+            trials:    trialsPayload
+        })
+    });
 }
 
 function pickRandom(arr) {
