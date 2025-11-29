@@ -2,50 +2,104 @@ body {
     margin: 0;
     padding: 0;
     background: #ffd54f;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     font-family: "Tajawal", sans-serif;
+    text-align: center;
     transition: background 0.2s ease-in-out;
 }
 
+/* شاشة البداية */
+#start-screen {
+    padding: 40px;
+}
+
+#start-screen h1 {
+    font-size: 40px;
+}
+
+#start-screen .desc {
+    font-size: 20px;
+    margin: 20px 0;
+}
+
+input {
+    width: 80%;
+    padding: 12px;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 22px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #555;
+}
+
+/* شاشة الاختبار */
 #test-container {
-    text-align: center;
+    margin-top: 30px;
 }
 
 #card {
     background: white;
-    width: 320px;
+    width: 340px;
     margin: 0 auto;
-    margin-top: 40px;
-    padding: 40px 20px;
-    border-radius: 20px;
+    padding: 40px;
+    border-radius: 25px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
 #word {
-    font-size: 60px;
+    font-size: 70px;
     font-weight: bold;
+}
+
+#info-bar {
+    margin-top: 25px;
+    font-size: 26px;
+    display: flex;
+    justify-content: space-around;
 }
 
 #color-buttons {
     margin-top: 60px;
     display: flex;
     justify-content: center;
-    gap: 18px;
+    gap: 16px;
 }
 
 .btn {
     width: 70px;
     height: 70px;
-    border-radius: 15px;
-    border: 3px solid rgba(255,255,255,0.8);
+    border-radius: 18px;
+    border: 3px solid white;
     cursor: pointer;
 }
 
-.btn[data-color="red"] { background: #ff3b30; }
-.btn[data-color="blue"] { background: #007aff; }
-.btn[data-color="green"] { background: #4cd964; }
-.btn[data-color="yellow"] { background: #ffeb3b; }
-.btn[data-color="orange"] { background: #ff9500; }
+/* ألوان الأزرار */
+.btn[data-color="أحمر"] { background: #ff3b30; }
+.btn[data-color="أزرق"] { background: #007aff; }
+.btn[data-color="أخضر"] { background: #4cd964; }
+.btn[data-color="أصفر"] { background: #ffeb3b; }
+.btn[data-color="برتقالي"] { background: #ff9500; }
+
+/* شاشة النهاية */
+#end-screen {
+    padding: 40px;
+}
+
+#end-screen h2 {
+    font-size: 38px;
+}
+
+#end-screen p {
+    font-size: 22px;
+    margin: 10px;
+}
