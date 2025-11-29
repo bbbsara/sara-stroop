@@ -1,5 +1,5 @@
+// إعداد الألوان والكلمات
 const words = ["أحمر", "أزرق", "أخضر", "أصفر", "برتقالي"];
-
 const colorsHex = {
     "أحمر":    "#ff3b30",
     "أزرق":    "#007aff",
@@ -10,125 +10,126 @@ const colorsHex = {
 
 const TOTAL = 40;
 
-let current = 0;
-let correct = 0;
-let wrong = 0;
-let startTime;
-let reactionTimes = [];
+let currentTrial = 0;
+let correctCount = 0;
+let wrongCount = 0;
+
+let trialData = [];  // لتخزين كل البطاقات
+let trialStartTime;
+
 let studentName = "";
 
-// مصفوفتان لتسجيل كل محاولة
-let shownWords = [];
-let shownInks  = [];
+// عناصر DOM
+const startScreen  = document.getElementById("start-screen");
+const testScreen   = document.getElementById("test-screen");
+const endScreen    = document.getElementById("end-screen");
 
-// عناصر الصفحة
-const startScreen = document.getElementById("start-screen");
-const testContainer = document.getElementById("test-container");
-const endScreen = document.getElementById("end-screen");
-
-const wordEl = document.getElementById("word");
+const wordEl   = document.getElementById("word");
 const counterEl = document.getElementById("counter");
-const timerEl = document.getElementById("timer");
+const timerEl   = document.getElementById("timer");
+
+// رابط Google Apps Script Web App  
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbwrhHBMHIQXOV7G77daUx88q-FPhP3e3K85ZyoGfqixHE9ZS84DF2Ymhf4wSmRWuUCliQ/exec";
 
 // بدء الاختبار
 document.getElementById("start-btn").onclick = () => {
-    studentName = document.getElementById("student-name").value.trim();
-    if (!studentName) {
-        alert("يرجى كتابة اسم الطالب");
-        return;
-    }
-
-    startScreen.style.display = "none";
-    testContainer.style.display = "block";
-
-    startTime = performance.now();
-    newTrial();
+  studentName = document.getElementById("student-name").value.trim();
+  if (!studentName) {
+    alert("اكتب اسمك");
+    return;
+  }
+  startScreen.style.display = "none";
+  testScreen.style.display  = "block";
+  newTrial();
 };
 
 function newTrial() {
-    current++;
+  currentTrial++;
+  if (currentTrial > TOTAL) {
+    finishTest();
+    return;
+  }
 
-    if (current > TOTAL) {
-        finishTest();
-        return;
-    }
+  counterEl.textContent = `${currentTrial} / ${TOTAL}`;
 
-    counterEl.textContent = `${current} / ${TOTAL}`;
+  const word = pickRandom(words);
+  const ink  = pickRandom(words.filter(c => c !== word));
 
-    // اختيار كلمة ولون خط مختلف
-    let word = pickRandom(words);
-    let ink = pickRandom(words.filter(c => c !== word));
+  wordEl.textContent = word;
+  wordEl.style.color = colorsHex[ink];
+  document.body.style.background = colorsHex[ink];
 
-    wordEl.textContent = word;
-    wordEl.style.color = colorsHex[ink];
-    document.body.style.background = colorsHex[ink];
+  wordEl.dataset.word = word;
+  wordEl.dataset.ink  = ink;
 
-    wordEl.dataset.correct = ink;
-
-    // تسجيل الكلمة واللون الحقيقي
-    shownWords.push(word);
-    shownInks.push(ink);
+  trialStartTime = performance.now();
 }
 
+// عند اختيار لون
 document.querySelectorAll(".btn").forEach(btn => {
-    btn.onclick = () => {
-        let answer = btn.dataset.color;
-        let correctColor = wordEl.dataset.correct;
+  btn.onclick = () => {
+    const chosen = btn.dataset.color;
+    const correctInk = wordEl.dataset.ink;
 
-        let now = performance.now();
-        reactionTimes.push(now - startTime);
-        startTime = now;
+    const rt = Math.round(performance.now() - trialStartTime);
 
-        if (answer === correctColor) correct++;
-        else wrong++;
+    const isCorrect = (chosen === correctInk);
+    if (isCorrect) correctCount++;
+    else wrongCount++;
 
-        newTrial();
-    };
+    trialData.push({
+      word:   wordEl.dataset.word,
+      ink:    correctInk,
+      answer: chosen,
+      rt:     rt,
+      correct: isCorrect ? 1 : 0
+    });
+
+    newTrial();
+  };
 });
 
-// دالة نهاية الاختبار + الإرسال إلى Google Sheet
 function finishTest() {
-    testContainer.style.display = "none";
-    endScreen.style.display = "block";
+  testScreen.style.display = "none";
+  endScreen.style.display = "block";
 
-    let totalTime = reactionTimes.reduce((a,b) => a+b, 0);
-    let avgTime = totalTime / reactionTimes.length;
+  const totalTime = trialData.reduce((acc, t) => acc + t.rt, 0);
+  const avgTime   = Math.round(totalTime / trialData.length);
 
-    document.getElementById("result-name").innerHTML   = "الاسم: " + studentName;
-    document.getElementById("result-correct").innerHTML = "الإجابات الصحيحة: " + correct;
-    document.getElementById("result-wrong").innerHTML   = "الأخطاء: " + wrong;
-    document.getElementById("result-time").innerHTML    = "الزمن الكلي: " + totalTime.toFixed(0) + " مللي ثانية";
-    document.getElementById("result-avg").innerHTML     = "متوسط الزمن: " + avgTime.toFixed(0) + " مللي ثانية";
+  document.getElementById("result-name").textContent    = "الاسم: "         + studentName;
+  document.getElementById("result-correct").textContent = "الإجابات الصحيحة: " + correctCount;
+  document.getElementById("result-wrong").textContent   = "الأخطاء: "         + wrongCount;
+  document.getElementById("result-total").textContent   = "الزمن الكلي: "     + totalTime + " مللي ثانية";
+  document.getElementById("result-avg").textContent     = "متوسط الزمن: "     + avgTime + " مللي ثانية";
 
-    // تجهيز البيانات للإرسال
-    let trialsPayload = shownWords.map((w, index) => ({
-        trial: index + 1,
-        word: w,
-        ink:  shownInks[index]
-    }));
+  sendToSheet();
+}
 
-    // إرسال النتائج إلى Google Sheet
-    fetch("https://script.google.com/macros/s/AKfycbxb79eruEEyc-MEtgA4hlc0_fdeWCBwXu7a5VEAdE62SiXJF__LS1doSy6hS-Im8dp7sQ/exec", {
-        method: "POST",
-        body: JSON.stringify({
-            name:      studentName,
-            correct:   correct,
-            wrong:     wrong,
-            totalTime: totalTime.toFixed(0),
-            avgTime:   avgTime.toFixed(0),
-            trials:    trialsPayload
-        })
-    });
+function sendToSheet() {
+  const payload = {
+    student:   studentName,
+    correct:   correctCount,
+    wrong:     wrongCount,
+    totalTime: trialData.reduce((a,b) => a + b.rt, 0),
+    avgTime:   Math.round(trialData.reduce((a,b) => a + b.rt, 0) / trialData.length),
+    trials:    trialData
+  };
+
+  fetch(SHEET_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(payload)
+  });
 }
 
 function pickRandom(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// مؤقت الشاشة (يعمل كل 100ms)
+// مؤقت حي يظهر الزمن منذ ظهور الكلمة الحالية
 setInterval(() => {
-    if (startScreen.style.display === "none" && testContainer.style.display === "block") {
-        let t = (performance.now() - startTime) / 1000;
-        timerEl.textContent = t.toFixed(2) + " ثانية";
-    }
+  if (testScreen.style.display === "block") {
+    const elapsed = performance.now() - trialStartTime;
+    timerEl.textContent = (elapsed/1000).toFixed(2) + " ثانية";
+  }
 }, 100);
