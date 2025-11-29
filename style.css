@@ -1,100 +1,67 @@
 body {
-  font-family: "Tajawal", sans-serif;
-  background: #f3f4f6;
-  text-align: center;
-  padding: 40px 10px;
+    margin: 0;
+    font-family: "Tajawal", sans-serif;
+    text-align: center;
+    transition: background 0.3s ease;
+    background: #ffffff;
 }
 
-#startScreen, #testScreen, #resultScreen {
-  max-width: 430px;
-  margin: auto;
-  background: #ffffff;
-  padding: 20px 16px;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+/* شاشة البداية */
+#start-screen, #end-screen {
+    padding: 40px;
 }
 
-h1, h2 {
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  font-size: 0.9rem;
-  color: #4b5563;
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-label {
-  display: block;
-  text-align: right;
-  margin-bottom: 4px;
-  font-size: 0.9rem;
-}
-
-#studentName {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  margin-bottom: 12px;
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 8px 0 20px;
+    font-size: 18px;
 }
 
 button {
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: none;
-  background: #10b981;
-  color: #022c22;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 8px;
+    padding: 12px 20px;
+    font-size: 20px;
+    border: none;
+    border-radius: 8px;
+    background: #333;
+    color: white;
+    cursor: pointer;
 }
 
 button:hover {
-  filter: brightness(1.05);
+    background: #555;
 }
 
-#wordCard {
-  margin: 26px 0;
-  font-size: 40px;
-  font-weight: bold;
-  padding: 16px;
-  border-radius: 12px;
-  background: #f9fafb;
-  border: 2px solid #e5e7eb;
+/* شاشة الاختبار */
+#status-bar {
+    margin-top: 20px;
+    font-size: 22px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
 }
 
-#timerBox {
-  font-size: 24px;
-  margin-bottom: 6px;
-  color: #f97316;
-  font-weight: 700;
+#word-box {
+    margin-top: 80px;
+    padding: 40px;
 }
 
-.instruction {
-  font-size: 0.9rem;
-  color: #374151;
-  line-height: 1.6;
+#stimulus {
+    font-size: 70px;
+    font-weight: bold;
 }
 
-#buttonsContainer {
-  margin-top: 10px;
+#buttons {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
 }
 
-.colorButton {
-  width: 120px;
-  height: 60px;
-  margin: 8px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-}
-
-#endStageBtn {
-  background: #e5e7eb;
-  color: #111827;
-  border-radius: 999px;
-  margin-top: 16px;
-  font-size: 0.9rem;
+.color-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    border: 3px solid #fff;
+    cursor: pointer;
 }
