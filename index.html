@@ -8,18 +8,54 @@
 </head>
 <body>
 
-<div id="test-container">
+<!-- شاشة البداية -->
+<div id="start-screen">
+    <h1>اختبار ستروب</h1>
+
+    <p class="desc">
+        هذا الاختبار يقيس سرعة الانتباه والتركيز. سيظهر أمامك اسم لون 
+        (مثل "أحمر" أو "أزرق") ولكن بلون مختلف.<br><br>
+        مهمتك هي اختيار <b>اللون الحقيقي للنص</b> وليس قراءة الكلمة.
+        لديك 40 محاولة. حاول الإجابة بأسرع وقت ممكن.
+    </p>
+
+    <label>اسم الطالب:</label>
+    <input id="student-name" type="text" placeholder="اكتب اسمك هنا">
+
+    <button id="start-btn">ابدأ الاختبار</button>
+</div>
+
+<!-- شاشة الاختبار -->
+<div id="test-container" style="display:none;">
     <div id="card">
         <span id="word"></span>
     </div>
 
-    <div id="color-buttons">
-        <button class="btn" data-color="red"></button>
-        <button class="btn" data-color="blue"></button>
-        <button class="btn" data-color="green"></button>
-        <button class="btn" data-color="yellow"></button>
-        <button class="btn" data-color="orange"></button>
+    <div id="info-bar">
+        <span id="counter">0 / 40</span>
+        <span id="timer">0.00 ثانية</span>
     </div>
+
+    <div id="color-buttons">
+        <button class="btn" data-color="أحمر"></button>
+        <button class="btn" data-color="أزرق"></button>
+        <button class="btn" data-color="أخضر"></button>
+        <button class="btn" data-color="أصفر"></button>
+        <button class="btn" data-color="برتقالي"></button>
+    </div>
+</div>
+
+<!-- شاشة النتائج -->
+<div id="end-screen" style="display:none;">
+    <h2>نتيجة الاختبار</h2>
+
+    <p id="result-name"></p>
+    <p id="result-correct"></p>
+    <p id="result-wrong"></p>
+    <p id="result-time"></p>
+    <p id="result-avg"></p>
+
+    <button onclick="location.reload()">إعادة الاختبار</button>
 </div>
 
 <script src="script.js"></script>
