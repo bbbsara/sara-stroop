@@ -1,49 +1,50 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>اختبار ستروب - النسخة الحديثة</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار ستروب</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- شاشة البداية -->
-  <div id="startScreen">
+<div id="start-screen">
     <h1>اختبار ستروب</h1>
-    <p class="subtitle">
-      يتكوّن الاختبار من مرحلتين:<br>
-      <strong>المرحلة الأولى:</strong> الكلمة مكتوبة بلون يطابق معناها (10 محاولات).<br>
-      <strong>المرحلة الثانية:</strong> الكلمة مكتوبة بلون لا يطابق المعنى (45 ثانية).
-    </p>
 
-    <label for="studentName">اسم الطالب:</label>
-    <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
+    <label>اسم الطالب:</label>
+    <input id="student-name" type="text" placeholder="اكتب اسمك هنا">
 
-    <button onclick="startStage1()">بدء المرحلة الأولى</button>
-  </div>
+    <label>الصف:</label>
+    <input id="student-class" type="text" placeholder="اكتب الصف أو الشعبة">
 
-  <!-- شاشة الاختبار -->
-  <div id="testScreen" style="display:none;">
-    <h2 id="stageTitle"></h2>
-    <div id="timerBox"></div>
+    <button id="start-btn">ابدأ الاختبار</button>
+</div>
 
-    <p id="instructionText" class="instruction"></p>
+<div id="test-screen" style="display:none;">
+    <div id="status-bar">
+        <span id="trial-count">0 / 40</span>
+        <span id="timer">0.00 ث</span>
+    </div>
 
-    <div id="wordCard"></div>
+    <div id="word-box">
+        <span id="stimulus">XXXXX</span>
+    </div>
 
-    <div id="buttonsContainer"></div>
+    <div id="buttons">
+        <button class="color-btn" data-color="أحمر" style="background:#e53935;"></button>
+        <button class="color-btn" data-color="أزرق" style="background:#1e88e5;"></button>
+        <button class="color-btn" data-color="أخضر" style="background:#43a047;"></button>
+        <button class="color-btn" data-color="أصفر" style="background:#fdd835;"></button>
+        <button class="color-btn" data-color="برتقالي" style="background:#fb8c00;"></button>
+    </div>
+</div>
 
-    <button id="endStageBtn" onclick="endStage()">إنهاء المرحلة الأولى والانتقال للثانية</button>
-  </div>
+<div id="end-screen" style="display:none;">
+    <h2>انتهى الاختبار</h2>
+    <p id="summary"></p>
+    <button onclick="location.reload()">إعادة الاختبار</button>
+</div>
 
-  <!-- شاشة النتائج -->
-  <div id="resultScreen" style="display:none;">
-    <h2>نتيجة الاختبار</h2>
-    <div id="resultsBox"></div>
-    <button onclick="restart()">إعادة الاختبار</button>
-  </div>
-
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
