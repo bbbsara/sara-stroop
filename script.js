@@ -19,7 +19,7 @@ let trialData = [];
 
 let studentName = "";
 
-// عناصر الصفحة (مطابقة للـ HTML)
+// عناصر الصفحة
 const startScreen = document.getElementById("start-screen");
 const testContainer = document.getElementById("test-container");
 const endScreen = document.getElementById("end-screen");
@@ -28,8 +28,9 @@ const wordEl = document.getElementById("word");
 const counterEl = document.getElementById("counter");
 const timerEl = document.getElementById("timer");
 
-// رابط Google Script
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbwrhHBMHIQXOV7G77daUx88q-FPhP3e3K85ZyoGfqixHE9ZS84DF2Ymhf4wSmRWuUCliQ/exec";
+// رابط Google Script (الجديد)
+const SHEET_URL =
+"https://script.google.com/macros/s/AKfycbwGLKTrPwWE1KBrE1d8GXTGTu6yG1wPKhABGFyP-_jCDWcqq7rBYo-LMg1rt81djRjPxw/exec";
 
 
 // بدء الاختبار
