@@ -1,5 +1,8 @@
+// =======================
 // إعداد الكلمات والألوان
+// =======================
 const words = ["أحمر", "أزرق", "أخضر", "أصفر", "برتقالي"];
+
 const colorsHex = {
     "أحمر": "#ff3b30",
     "أزرق": "#007aff",
@@ -8,8 +11,10 @@ const colorsHex = {
     "برتقالي": "#ff9500"
 };
 
+// عدد المحاولات الكلي
 const TOTAL = 40;
 
+// متغيّرات حالة الاختبار
 let current = 0;
 let correct = 0;
 let wrong = 0;
@@ -20,20 +25,26 @@ let trialData = [];
 let studentName = "";
 
 // عناصر الصفحة
-const startScreen = document.getElementById("start-screen");
+const startScreen   = document.getElementById("start-screen");
 const testContainer = document.getElementById("test-container");
-const endScreen = document.getElementById("end-screen");
+const endScreen     = document.getElementById("end-screen");
 
-const wordEl = document.getElementById("word");
+const wordEl    = document.getElementById("word");
 const counterEl = document.getElementById("counter");
-const timerEl = document.getElementById("timer");
+const timerEl   = document.getElementById("timer");
 
-// رابط Google Script الصحيح
+// =======================
+// رابط Google Apps Script
+// =======================
+
 const SHEET_URL =
-  "https://script.google.com/macros/s/AKfycbzo6i9GBBqH-dXdJa1Dw8IOsLpa65nqXlzDz39XN5bBtjyua0IQ3a4fmHtBLMF69m4K/exec";
+  "https://script.google.com/macros/s/AKfycbypwGjMqJx2lT_L7wbPcuuj6_UShdCR1kPhG045lW4HvQScuNl4NiHcSGihZYgYNMEG/exec";
 
 
+// =======================
 // بدء الاختبار
+// =======================
+
 document.getElementById("start-btn").onclick = () => {
     studentName = document.getElementById("student-name").value.trim();
     if (!studentName) {
@@ -41,14 +52,22 @@ document.getElementById("start-btn").onclick = () => {
         return;
     }
 
-    startScreen.style.display = "none";
+    startScreen.style.display   = "none";
     testContainer.style.display = "block";
+
+    current     = 0;
+    correct     = 0;
+    wrong       = 0;
+    trialData   = [];
 
     newTrial();
 };
 
 
-// بطاقة جديدة
+// =======================
+// إنشاء بطاقة جديدة
+// =======================
+
 function newTrial() {
     current++;
     if (current > TOTAL) {
@@ -56,38 +75,47 @@ function newTrial() {
         return;
     }
 
+    // تحديث العداد  (المحاولة الحالية / الإجمالي)
     counterEl.textContent = `${current} / ${TOTAL}`;
 
-    let word = pickRandom(words);
-    let ink = pickRandom(words.filter(c => c !== word));
+    // اختيار كلمة و لون حبر مختلف عنها
+    const word = pickRandom(words);
+    const ink  = pickRandom(words.filter(c => c !== word));
 
-    wordEl.textContent = word;
-    wordEl.style.color = colorsHex[ink];
+    wordEl.textContent   = word;
+    wordEl.style.color   = colorsHex[ink];
     document.body.style.background = colorsHex[ink];
 
     wordEl.dataset.word = word;
-    wordEl.dataset.ink = ink;
+    wordEl.dataset.ink  = ink;
 
     trialStart = performance.now();
 }
 
 
-// ضغط زر
+// =======================
+// التعامل مع ضغط الأزرار
+// =======================
+
 document.querySelectorAll(".btn").forEach(btn => {
     btn.onclick = () => {
-        let answer = btn.dataset.color;
-        let correctInk = wordEl.dataset.ink;
+        const answer    = btn.dataset.color;
+        const correctInk = wordEl.dataset.ink;
 
-        let reaction = Math.round(performance.now() - trialStart);
+        const reaction = Math.round(performance.now() - trialStart);
 
-        let isCorrect = (answer === correctInk);
-        if (isCorrect) correct++; else wrong++;
+        const isCorrect = (answer === correctInk);
+        if (isCorrect) {
+            correct++;
+        } else {
+            wrong++;
+        }
 
         trialData.push({
-            word: wordEl.dataset.word,
-            ink: correctInk,
+            word:   wordEl.dataset.word,
+            ink:    correctInk,
             answer: answer,
-            rt: reaction,
+            rt:     reaction,
             correct: isCorrect ? 1 : 0
         });
 
@@ -96,54 +124,69 @@ document.querySelectorAll(".btn").forEach(btn => {
 });
 
 
-// إنهاء الاختبار
+// =======================
+// إنهاء الاختبار وإظهار النتيجة
+// =======================
+
 function finishTest() {
     testContainer.style.display = "none";
-    endScreen.style.display = "block";
+    endScreen.style.display     = "block";
 
-    let totalTime = trialData.reduce((a, b) => a + b.rt, 0);
-    let avgTime = Math.round(totalTime / trialData.length);
+    const totalTime = trialData.reduce((a, b) => a + b.rt, 0);
+    const avgTime   = Math.round(totalTime / trialData.length);
 
-    document.getElementById("result-name").textContent = "الاسم: " + studentName;
+    document.getElementById("result-name").textContent    = "الاسم: " + studentName;
     document.getElementById("result-correct").textContent = "الإجابات الصحيحة: " + correct;
-    document.getElementById("result-wrong").textContent = "الأخطاء: " + wrong;
-    document.getElementById("result-time").textContent = "الزمن الكلي: " + totalTime + " مللي ثانية";
-    document.getElementById("result-avg").textContent = "متوسط الزمن: " + avgTime + " مللي ثانية";
+    document.getElementById("result-wrong").textContent   = "الأخطاء: " + wrong;
+    document.getElementById("result-time").textContent    = "الزمن الكلي: " + totalTime + " مللي ثانية";
+    document.getElementById("result-avg").textContent     = "متوسط الزمن: " + avgTime + " مللي ثانية";
 
+    // إرسال البيانات إلى Google Sheet
     sendToSheet(totalTime, avgTime);
 }
 
 
-// إرسال البيانات إلى Google Sheet عبر FormData
+// =======================
+// إرسال البيانات إلى Google Sheets
+// =======================
+
 function sendToSheet(total, avg) {
     const form = new FormData();
 
-    form.append("student", studentName);
-    form.append("correct", String(correct));
-    form.append("wrong", String(wrong));
-    form.append("totalTime", String(total));
-    form.append("avgTime", String(avg));
-    form.append("trials", JSON.stringify(trialData));
+    form.append("student",    studentName);
+    form.append("correct",    String(correct));
+    form.append("wrong",      String(wrong));
+    form.append("totalTime",  String(total));
+    form.append("avgTime",    String(avg));
+    form.append("trials",     JSON.stringify(trialData));
 
     fetch(SHEET_URL, {
         method: "POST",
         body: form
-    }).catch(err => {
+    })
+    .then(r => r.text())
+    .then(txt => {
+        console.log("Google Script response:", txt);
+        // لا نستخدم alert هنا حتى لا نغيّر سلوك الواجهة
+    })
+    .catch(err => {
         console.error("خطأ أثناء الإرسال إلى Google Sheet:", err);
     });
 }
 
 
-// اختيار عشوائي
+// =======================
+// دوال مساعدة
+// =======================
+
 function pickRandom(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
-
-// مؤقت حي
+// مؤقت حي لعرض الزمن الحالي للمحاولة
 setInterval(() => {
-    if (testContainer.style.display === "block") {
-        let elapsed = performance.now() - trialStart;
+    if (testContainer.style.display === "block" && trialStart) {
+        const elapsed = performance.now() - trialStart;
         timerEl.textContent = (elapsed / 1000).toFixed(2) + " ثانية";
     }
 }, 100);
