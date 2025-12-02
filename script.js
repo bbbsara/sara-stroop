@@ -28,9 +28,9 @@ const wordEl = document.getElementById("word");
 const counterEl = document.getElementById("counter");
 const timerEl = document.getElementById("timer");
 
-// رابط Google Script الجديد
+// رابط Google Script
 const SHEET_URL =
-"https://script.google.com/macros/s/AKfycbzo6i9GBBqH-dXdJa1Dw8IOsLpa65nqXlzDz39XN5bBtjyua0IQ3a4fmHtBLMF69m4K/exec";
+  "https://script.google.com/macros/s/AKfycbzo6i9GBBqH-dXdJa1Dw8IOsLpa65nqXlzDz39XN5bBtjyua0IQ3a4fmHtBLMF69m4K/exec";
 
 
 // بدء الاختبار
@@ -114,21 +114,22 @@ function finishTest() {
 }
 
 
-// إرسال البيانات إلى Google Sheet
+// إرسال البيانات إلى Google Sheet عبر FormData (بدون no-cors)
 function sendToSheet(total, avg) {
-    let payload = {
-        student: studentName,
-        correct: correct,
-        wrong: wrong,
-        totalTime: total,
-        avgTime: avg,
-        trials: trialData
-    };
+    const form = new FormData();
+
+    form.append("student", studentName);
+    form.append("correct", String(correct));
+    form.append("wrong", String(wrong));
+    form.append("totalTime", String(total));
+    form.append("avgTime", String(avg));
+    form.append("trials", JSON.stringify(trialData));
 
     fetch(SHEET_URL, {
         method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify(payload)
+        body: form
+    }).catch(err => {
+        console.error("خطأ أثناء الإرسال إلى Google Sheet:", err);
     });
 }
 
