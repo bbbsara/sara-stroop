@@ -28,7 +28,7 @@ const wordEl = document.getElementById("word");
 const counterEl = document.getElementById("counter");
 const timerEl = document.getElementById("timer");
 
-// رابط Google Script
+// رابط Google Script الصحيح
 const SHEET_URL =
   "https://script.google.com/macros/s/AKfycbzo6i9GBBqH-dXdJa1Dw8IOsLpa65nqXlzDz39XN5bBtjyua0IQ3a4fmHtBLMF69m4K/exec";
 
@@ -114,7 +114,7 @@ function finishTest() {
 }
 
 
-// إرسال البيانات إلى Google Sheet عبر FormData (بدون no-cors)
+// إرسال البيانات إلى Google Sheet عبر FormData
 function sendToSheet(total, avg) {
     const form = new FormData();
 
