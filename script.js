@@ -28,9 +28,9 @@ const wordEl = document.getElementById("word");
 const counterEl = document.getElementById("counter");
 const timerEl = document.getElementById("timer");
 
-// رابط Google Script (الجديد)
+// رابط Google Script الجديد
 const SHEET_URL =
-"https://script.google.com/macros/s/AKfycbwGLKTrPwWE1KBrE1d8GXTGTu6yG1wPKhABGFyP-_jCDWcqq7rBYo-LMg1rt81djRjPxw/exec";
+"https://script.google.com/macros/s/AKfycbzo6i9GBBqH-dXdJa1Dw8IOsLpa65nqXlzDz39XN5bBtjyua0IQ3a4fmHtBLMF69m4K/exec";
 
 
 // بدء الاختبار
@@ -114,7 +114,7 @@ function finishTest() {
 }
 
 
-// إرسال البيانات
+// إرسال البيانات إلى Google Sheet
 function sendToSheet(total, avg) {
     let payload = {
         student: studentName,
